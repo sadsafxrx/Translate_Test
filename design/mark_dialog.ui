@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Mark_dialog</class>
+ <widget class="QDialog" name="Mark_dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>105</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>105</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>300</width>
+    <height>105</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>ИТОГИ</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Test-case.ico</normaloff>Test-case.ico</iconset>
+  </property>
+  <widget class="QLabel" name="mark_text">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>281</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Ваша оценка:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="again">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>62</y>
+     <width>271</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ЗАНОВО</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
