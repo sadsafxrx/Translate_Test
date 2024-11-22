@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import (
 )
 from random import randint, uniform
 
-list_of_symbols = [
+list_of_symbols_16 = [
     "A",
     "B",
     "C",
@@ -29,17 +29,20 @@ list_of_symbols = [
     ".",
     ",",
 ]
-
-dict_with_error_codes = {
-    0: ["Same system", "Выберите различные\nсистемы счисления"],
-    1: ["Unknown symbol", f"Используйте только:\n'{''.join(list_of_symbols)}'"],
-    2: ["No answer", "Сначала введите\nответ"],
-    3: [
-        "A large number of examples",
-        "Введите меньшее\nколичество тестов\n(<=15)",
-    ],
-    4: ["Not a digit", "Используйте положительное\nцелое число"],
-}
+list_of_symbols = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+    ".",
+    ",",
+]
 
 
 class Num_Translate(QMainWindow):
@@ -72,6 +75,20 @@ class Num_Translate(QMainWindow):
         # Изначальное положение кнопок
         self.in_system = 2
         self.from_system = 2
+
+        dict_with_error_codes = {
+            0: ["Same system", "Выберите различные\nсистемы счисления"],
+            1: [
+                "Unknown symbol",
+                f"Используйте только:\n'{''.join(list_of_symbols_16 if self.in_system == 16 else list_of_symbols)}'",
+            ],
+            2: ["No answer", "Сначала введите\nответ"],
+            3: [
+                "A large number of examples",
+                "Введите меньшее\nколичество тестов\n(<=15)",
+            ],
+            4: ["Not a digit", "Используйте положительное\nцелое число"],
+        }
 
     # Изменение сс при нажатии
     def inss(self, button):
@@ -166,9 +183,14 @@ class Num_Translate(QMainWindow):
     # ПРОВЕРКА ОТВЕТА НА СИМВОЛЫ
     def check_symbol(self, text):
         self.count_of_incorrect_sym = 0
-        for symbol in list(text):
-            if symbol not in list_of_symbols:
-                self.count_of_incorrect_sym += 1
+        if self.in_system == 16:
+            for symbol in list(text):
+                if symbol not in list_of_symbols_16:
+                    self.count_of_incorrect_sym += 1
+        else:
+            for symbol in list(text):
+                if symbol not in list_of_symbols:
+                    self.count_of_incorrect_sym += 1
 
     # Вызов диалога с ошибкой + определение типа ошибки
     def show_error(self, extra_code=0):
@@ -190,7 +212,7 @@ class Num_Translate(QMainWindow):
         if not self.count_number.text().isdigit():
             error_code = 4
 
-        rd = Error(error_code)
+        rd = Error(error_code, self.in_system)
         rd.show()
         rd.exec()
 
@@ -217,15 +239,26 @@ class Num_Translate(QMainWindow):
                 text = answer
                 self.check_symbol(text)
                 if text != "":
-                    for symbol in list(text):
-                        if symbol not in list_of_symbols:
-                            self.show_error(extra_code=1)
-                            td = Test_dialog(
-                                n, self.test[n], self.from_system, self.in_system
-                            )
-                            td.show()
-                            td.exec()
-                            break
+                    if self.in_system == 16:
+                        for symbol in list(text):
+                            if symbol not in list_of_symbols_16:
+                                self.show_error(extra_code=1)
+                                td = Test_dialog(
+                                    n, self.test[n], self.from_system, self.in_system
+                                )
+                                td.show()
+                                td.exec()
+                                break
+                    else:
+                        for symbol in list(text):
+                            if symbol not in list_of_symbols:
+                                self.show_error(extra_code=1)
+                                td = Test_dialog(
+                                    n, self.test[n], self.from_system, self.in_system
+                                )
+                                td.show()
+                                td.exec()
+                                break
                     # Вывести ошибку
                 elif text == "":
                     self.show_error(extra_code=2)
@@ -293,9 +326,24 @@ class Mark_dialog(QDialog):
 
 # Диалог с ошибкой об одинакого выбранных сс
 class Error(QDialog):
-    def __init__(self, error_code):
+    def __init__(self, error_code, in_system=2):
         super().__init__()
         uic.loadUi(os.path.abspath("design/ss_error_dialog.ui"), self)
+
+        dict_with_error_codes = {
+            0: ["Same system", "Выберите различные\nсистемы счисления"],
+            1: [
+                "Unknown symbol",
+                f"Используйте только:\n'{''.join(list_of_symbols_16 if in_system == 16 else list_of_symbols)}'",
+            ],
+            2: ["No answer", "Сначала введите\nответ"],
+            3: [
+                "A large number of examples",
+                "Введите меньшее\nколичество тестов\n(<=15)",
+            ],
+            4: ["Not a digit", "Используйте положительное\nцелое число"],
+        }
+
         self.ok.clicked.connect(self.try_again)
         self.error_text.setText(dict_with_error_codes[error_code][1])
 
@@ -305,7 +353,7 @@ class Error(QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    
+
     nt = Num_Translate()
     nt.show()
     sys.exit(app.exec())
