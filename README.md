@@ -1,1 +1,1 @@
-https://disk.yandex.ru/d/TCB3NFtE14ctTA  - link to main.exe
+https://disk.yandex.ru/d/d7CkLgJp7rR_PA  - link to main.exe
